@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title> Cadastro de Cliente </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="text/javascript" src="javascript.js"></script>
+        <script type="text/javascript">
+function valida_cpf(cpf)
+{
+  cpf = cpf.replace('.','');
+  cpf = cpf.replace('-','');
+  var numeros, digitos, soma, i, resultado, digitos_iguais;
+  digitos_iguais = 1;
+  if (cpf.length < 11)
+        return false;
+  for (i = 0; i < cpf.length - 1; i++)
+        if (cpf.charAt(i) != cpf.charAt(i + 1))
+              {
+              digitos_iguais = 0;
+              break;
+              }
+  if (!digitos_iguais)
+        {
+        numeros = cpf.substring(0,9);
+        digitos = cpf.substring(9);
+        soma = 0;
+        for (i = 10; i > 1; i--)
+              soma += numeros.charAt(10 - i) * i;
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(0))
+              return false;
+        numeros = cpf.substring(0,10);
+        soma = 0;
+        for (i = 11; i > 1; i--)
+              soma += numeros.charAt(11 - i) * i;
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(1))
+              return false;
+        return true;
+        }
+  else
+        return false;
+}
+
+function faz()
+{
+  document.getElementById('msgOK').style.display = 'none'; 
+  document.getElementById('msgErro').style.display = 'none'; 
+  var cpf = document.getElementById('numero').value;
+  
+  if(valida_cpf(cpf))
+    document.getElementById('msgOK').style.display = 'block'; 
+  else
+    document.getElementById('msgErro').style.display = 'block'; 
+}
+</script>
+</head>
+
+<body>
+<form name="form1" action="http://www.exemplo.com/" method="post" onsubmit="return valida()"  >
+   <table border="1" >
+    <tr>
+        <th colspan="2">Cadastro de Cliente</th>
+    </tr>
+        <tr>
+            <td>
+                CPF : 
+            </td>
+                <td>
+                    <input type='text' required="required" id="cpf" name='cpf' size="15" maxlength="14" onkeypress='mascara(this,cpfM)' onblur='clearTimeout()'>
+                </td>
+        </tr>
+    <tr>
+        <td>
+            <label for="nome">Nome: </label>
+        </td>
+             <td align="left">
+                  <input id="nome"  type="text" name="nome" size="80" onkeypress="return SomenteLetras();" required="required" onkeyup="maiuscula(this)" />
+             </td>
+    </tr>
+        <tr>
+            <td>
+                <label for="endereco">Endereço: </label>
+            </td>
+            <td align="left">
+                <input id="endereco" type="text" name="endereco" size="80" onkeyup="maiuscula(this)" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="cidade">Cidade: </label>
+            </td>
+            <td align="left">
+                <input  id="cidade" type="text" name="cidade" size="50" required="required" onkeyup="maiuscula(this)" />
+            </td>
+        </tr>
+          <tr>
+            <td>
+                <label for="estado">Estado Civil:</label>
+            </td>
+            <td align="left">
+                <select name="sel" id="sexo"> 
+                    <option value=""> Escolha um Sexo !</option>
+                    <option value="mas">Masculino</option> 
+                    <option value="al">Feminino</option> 
+                    
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="telefone">Telefone: </label>
+            </td>
+            <td align="left">
+      <input type='text' required="required" name='tel' size="15" maxlength="15" onkeypress='mascara(this,telM)' onblur='clearTimeout()'>
+            </td>
+        </tr>
+      
+        <tr>
+            <td>
+                <label for="login">E-mail(Login): </label>
+            </td>
+            <td align="left">
+                <input id="email" required="required" type="email" name="login" size="40">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="senha">Senha: </label>
+            </td>
+            <td align="left">
+                <input id="senha" required="required" onkeyup="this.value = Trim( this.value )" type="password" name="senha" size="15">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="login">Receber Promoções: </label>
+            </td>
+            <td align="left">
+    <table border="0">
+    <tr>
+        <td><input type='checkbox' name='opcao'  value="simCheckBox" id="simCheckBox" onclick='checkBoxMarcando( this )'>Sim
+        </td>
+        <td rowspan="2" >
+            <input type="text" style="color: red;border: none;background: transparent"id="msg" size="80" ><br>
+            <input type="text" style="color: red;border: none;background: transparent"id="msg1" size="80" disabled="true"><br>
+            <input type="text" style="color: red;border: none;background: transparent"id="msg2" size="80" disabled="true">
+        </td>
+    </tr>
+        <tr>
+        <td><input type='checkbox' name='opcao'  value="naoCheckBox" id="naoCheckBox" onclick='checkBoxMarcando( this )'>Não  
+        </td>
+    </tr>
+</table>
+</td>
+        </tr>
+        <tr>
+            <td>
+                <label for="obs">Obs: </label>
+            </td>
+            <td align="left" colspaw="3">
+                
+                <textarea id="obs" onkeypress='obsMaior200()' type="text" name="obs" maxlength="200" size="200" COLS= "40" ROWS="6" ></textarea>
+                
+            </td>
+        </tr>
+    <tr>
+        <td>
+        <td>
+            <input type="submit" name="enviar" id="enviar" value="Enviar" />
+    <input type="button" onclick="valida()" value="Valores">
+         </td>
+        </td>
+    </tr>
+    
+    </table>
+
+</form>
+
+</body>
+</html>
+
